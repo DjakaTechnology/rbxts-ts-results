@@ -1,6 +1,5 @@
-// import { HttpService } from "@rbxts/services";
+import { HttpService } from "@rbxts/services";
 
 export function toString(val: unknown): string {
-    // return HttpService.JSONEncode(val);
-    return "JSONEncode";
+    return HttpService.JSONEncode(val);
 }

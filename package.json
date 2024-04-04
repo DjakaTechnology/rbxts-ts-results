@@ -1,6 +1,6 @@
 {
-	"name": "rbxts-ts-results",
-	"version": "0.1.0-dev-01",
+	"name": "@rbxts/ts-results",
+	"version": "0.2.0",
 	"description": "A roblox typescript implementation of Rust's Result and Option objects.",
 	"scripts": {
 		"build": "rbxtsc --verbose",
@@ -34,6 +34,7 @@
 		"url": "git+https://github.com/djakatechnology/rbxts-ts-results.git"
 	},
 	"devDependencies": {
+    "@rbxts/services": "^1.5.4",
 		"@rbxts/compiler-types": "^2.2.0-types.0",
 		"@rbxts/testez": "^0.3.1-ts.6",
 		"@rbxts/types": "^1.0.744",
@@ -61,8 +62,5 @@
 	},
 	"files": [
 		"out"
-	],
-	"dependencies": {
-		"@rbxts/services": "^1.5.4"
-	}
+	]
 }
