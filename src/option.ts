@@ -1,7 +1,7 @@
 import { toString } from './utils';
 import { Result, Ok, Err } from './result';
 
-interface BaseOption<T> extends Iterable<T extends Iterable<infer U> ? U : never> {
+interface BaseOption<T> {
     /** `true` when the Option is Some */ readonly some: boolean;
     /** `true` when the Option is None */ readonly none: boolean;
 
@@ -44,7 +44,7 @@ interface BaseOption<T> extends Iterable<T extends Iterable<infer U> ? U : never
     /**
      * Maps an `Option<T>` to a `Result<T, E>`.
      */
-    toResult<E>(error: E): Result<T, E>;
+    toResult<E>(err: E): Result<T, E>;
 }
 
 /**
@@ -54,24 +54,16 @@ class NoneImpl implements BaseOption<never> {
     readonly some = false;
     readonly none = true;
 
-    [Symbol.iterator](): Iterator<never, never, any> {
-        return {
-            next(): IteratorResult<never, never> {
-                return { done: true, value: undefined! };
-            },
-        };
-    }
-
     unwrapOr<T2>(val: T2): T2 {
         return val;
     }
 
     expect(msg: string): never {
-        throw new Error(`${msg}`);
+        throw`${msg}`;
     }
 
     unwrap(): never {
-        throw new Error(`Tried to unwrap None`);
+        throw `Tried to unwrap None`;
     }
 
     map<T2>(_mapper: unknown): None {
@@ -82,8 +74,8 @@ class NoneImpl implements BaseOption<never> {
         return this;
     }
 
-    toResult<E>(error: E): Err<E> {
-        return Err(error);
+    toResult<E>(err: E): Err<E> {
+        return Err(err);
     }
 
     toString(): string {
@@ -91,10 +83,9 @@ class NoneImpl implements BaseOption<never> {
     }
 }
 
-// Export None as a singleton, then freeze it so it can't be modified
+// Export None as a singleton
 export const None = new NoneImpl();
 export type None = NoneImpl;
-Object.freeze(None);
 
 /**
  * Contains the success value
@@ -105,21 +96,6 @@ class SomeImpl<T> implements BaseOption<T> {
     readonly some!: true;
     readonly none!: false;
     readonly val!: T;
-
-    /**
-     * Helper function if you know you have an Some<T> and T is iterable
-     */
-    [Symbol.iterator](): Iterator<T extends Iterable<infer U> ? U : never> {
-        const obj = Object(this.val) as Iterable<any>;
-
-        return Symbol.iterator in obj
-            ? obj[Symbol.iterator]()
-            : {
-                  next(): IteratorResult<never, never> {
-                      return { done: true, value: undefined! };
-                  },
-              };
-    }
 
     constructor(val: T) {
         if (!(this instanceof SomeImpl)) {
@@ -151,7 +127,7 @@ class SomeImpl<T> implements BaseOption<T> {
         return mapper(this.val);
     }
 
-    toResult<E>(error: E): Ok<T> {
+    toResult<E>(_err: E): Ok<T> {
         return Ok(this.val);
     }
 

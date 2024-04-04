@@ -1,32 +1,68 @@
 {
-  "name": "ts-results",
-  "version": "3.3.0",
-  "description": "A typescript implementation of Rust's Result and Option objects.",
-  "private": true,
-  "scripts": {
-    "build": "npm run clean && npm run build:ts && npm run build:copy",
-    "build:ts": "tsc -p tsconfig.json && tsc -p tsconfig.json -m esnext --outDir dist/esm/ -d false -declarationMap false",
-    "build:copy": "copyfiles README.md LICENSE src/package.json dist --flat && copyfiles src/rxjs-operators/package.json dist --up 1",
-    "clean": "rm -rf dist",
-    "test": "jest",
-    "format": "prettier . --write"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vultix/ts-results.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/jest": "^26.0.22",
-    "conditional-type-checks": "^1.0.5",
-    "copyfiles": "^2.4.1",
-    "jest": "^26.6.3",
-    "prettier": "^2.2.1",
-    "rxjs": "^6.6.7",
-    "ts-jest": "^26.5.4",
-    "tslib": "^2.1.0",
-    "typescript": "^4.2"
-  }
+	"name": "@rbxts/ts-results",
+	"version": "0.1.0",
+	"description": "A roblox typescript implementation of Rust's Result and Option objects.",
+	"scripts": {
+		"build": "rbxtsc --verbose",
+		"dev-add-version": "copy package.json package-temp.json & for /F \"tokens=*\" %n IN ('git rev-parse --short HEAD') DO (cat package.json | jq --tab \".version |= . + \\\"-dev-%n\\\"\" > package-new.json & move package-new.json package.json)",
+		"dev-undo-version": "move package-temp.json package.json",
+		"dev-publish": "npm run dev-add-version && npm publish --tag next & npm run dev-undo-version"
+	},
+	"keywords": [
+		"Roblox",
+		"Rust",
+		"Result",
+		"Results",
+		"Option",
+		"Options",
+		"Typescript",
+		"TS",
+		"Ok",
+		"Err",
+		"Some",
+		"None",
+		"Typed Errors",
+		"Error Handling",
+		"Monad",
+		"Maybe",
+		"Union"
+	],
+	"author": "DjakaTechnology",
+	"license": "MPL-2.0",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/djakatechnology/rbxts-ts-results.git"
+	},
+	"devDependencies": {
+		"@rbxts/compiler-types": "^2.2.0-types.0",
+		"@rbxts/testez": "^0.3.1-ts.6",
+		"@rbxts/types": "^1.0.744",
+		"@typescript-eslint/eslint-plugin": "^6.19.1",
+		"@typescript-eslint/parser": "^6.19.1",
+		"eslint": "^8.24.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-simple-import-sort": "^8.0.0",
+		"prettier": "^2.7.1",
+		"roblox-ts": "^2.2.0",
+		"typescript": "^5.2.2"
+	},
+	"bugs": {
+		"url": "https://github.com/djakatechnology/rbxts-ts-results/issues"
+	},
+	"homepage": "https://github.com/djakatechnology/rbxts-ts-results#readme",
+	"main": "out/init.lua",
+	"types": "out/index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
+	"directories": {
+		"lib": "src"
+	},
+	"files": [
+		"out"
+	],
+	"dependencies": {
+		"@rbxts/services": "^1.5.4"
+	}
 }
